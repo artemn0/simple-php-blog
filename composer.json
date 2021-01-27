@@ -1,0 +1,7 @@
+{
+	"require": {
+		"gabordemooij/redbean": "dev-master",
+		"datto/json-rpc": "~5.0",
+		"respect/validation": "^1.1"
+	}
+}

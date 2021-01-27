@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>DIIT-IT</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Блог-платформа DIIT-IT">
+    <meta name="keywords" content="блог, блог-платформа, веблог, DIIT-IT">
+    <link rel="stylesheet" href="css/w3.css">
+    <link rel="stylesheet" href="css/w3-theme-blue-grey.css" id="theme">
+    <link rel="stylesheet" href="css/style.min.css">
+    <link rel="stylesheet" href="fontawesome-free-5.7.2-web/css/all.min.css">
+</head>
+<body id="body" class="w3-theme-l5">
+
+<!-- header -->
+<div id="header" class="w3-bar w3-theme-d5">
+    <button class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme" title="Главная" data-type="page" data-page="1"><i class="fas fa-home" data-type="page" data-page="1"></i></button>
+    <div class="w3-dropdown-hover">
+        <button class="w3-button w3-theme-d5 w3-hover-theme" title="Аккаунт"><i class="fas fa-user"></i></button>
+        <div class="w3-dropdown-content w3-bar-block">
+            <button v-if="!isAuth" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme" title="Войти" data-type="navigation" data-to="login"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            <button v-if="!isAuth" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme" title="Регистрация" data-type="navigation" data-to="registration"><i class="fas fa-user-plus"></i> Регистрация</button>
+            <button v-if="isAuth" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme" title="Выйти" data-type="logout"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+        </div>
+    </div>
+     <button v-if="isAuth" class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme" title="Написать" data-type="navigation" data-to="write"><i class="fas fa-pen" data-type="navigation" data-to="write"></i></button>
+     <div class="w3-dropdown-hover">
+        <button class="w3-button w3-theme-d5 w3-hover-theme" title="Оформление"><i class="fas fa-palette"></i></button>
+        <div class="w3-dropdown-content w3-bar-block">
+            <theme-selector v-for="theme in themes" v-bind:theme="theme" v-bind:key="theme.id"></theme-selector>
+        </div>
+    </div>
+     <button class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme" title="Контакты" data-type="navigation" data-to="contacts"><i class="fas fa-id-card" data-type="navigation" data-to="contacts"></i></button>
+     <a class="w3-bar-item w3-button w3-theme-d5 w3-hover-theme w3-display-topright" href="#down"><i class="fas fa-arrow-down"></i></a>
+</div>
+
+<!-- content -->
+<main id="app">
+    <div class="w3-panel w3-left">
+        <img src="img/diit-it-v3.png" style=""/>
+    </div>
+    <i v-if="loading" class="w3-spin w3-display-middle fas fa-spinner" style="font-size: 7em; position: fixed;"></i>
+    <div class="w3-row" id="up">
+        <div class="w3-col s12 m3 l2">
+            <div class="w3-panel">
+                <div class="w3-card">
+                    <div class="w3-container w3-theme w3-center" v-if="init"><p>Реклама</p></div>
+                    <br>
+                    <div class="w3-container">
+                        <div class="w3-panel"><!-- space --></div>
+                        <p class="w3-center">Здесь может быть ваша реклама</p>
+                        <div class="w3-panel"><!-- space --></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-col s12 m6 l8" v-if="pageType == 'main'">
+            <post v-for="post in posts" v-bind:post="post" v-bind:key="post.id"></post>
+        </div>
+        <registration v-if="pageType == 'registration'"></registration>
+        <login v-if="pageType == 'login'"></login>
+        <contacts v-if="pageType == 'contacts'"></contacts>
+        <write v-if="pageType == 'write'"></write>
+        <div id="message" class="w3-modal">
+            <div class="w3-modal-content w3-card-4 w3-animate-zoom w3-display-container" style="max-width:600px">
+                <div class="w3-panel">
+                    <div class="w3-panel">
+                        <div class="w3-btn w3-theme-action w3-display-topright" onclick="hideMessage()">x</div>
+                        <div class="w3-panel"><!-- space --></div>
+                        <div class="w3-container">{{message}}</div>
+                        <div class="w3-panel"><!-- space --></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w3-col s12 m3 l2">
+            <div class="w3-panel">
+                <div class="w3-card">
+                    <div class="w3-container w3-theme w3-center" v-if="init"><p>Новые записи</p></div>
+                    <br>
+                    <div class="w3-container">
+                        <sidebar-post v-for="post in newPosts" v-bind:post="post" v-bind:key="post.id"></sidebar-post>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w3-panel">
+                <div class="w3-card">
+                    <div class="w3-container w3-theme w3-center" v-if="init"><p>Популярные записи</p></div>
+                    <br>
+                    <div class="w3-container">
+                        <sidebar-post v-for="post in popularPosts" v-bind:post="post" v-bind:key="post.id"></sidebar-post>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-row">
+        <div class="w3-col s12 m12 l12">
+            <div class="w3-panel w3-center">
+                <paginator v-for="page in pages" v-bind:page="page" v-bind:key="page.id" v-if="showPaginator"></paginator>
+            </div>
+        </div>
+    </div>
+
+    <div class="w3-panel"><!-- space --></div>
+
+    <div class="w3-panel w3-center" v-if="init" id="down">
+        <p>© Artem Novykov, {{ year }}</p>
+    </div>
+</main>
+
+<script>
+var jsonrpc = {};
+</script>
+<script src="js/vue-developer.js" defer></script>
+<!--<script src="js/vue-production.js" defer></script>-->
+<script src="js/common.js" defer></script>
+
+</body>
+</html>
