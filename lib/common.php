@@ -37,14 +37,16 @@ function mixedMark($string){
         '`\[i\](.+?)\[/i\]`is',
         '`\[u\](.+?)\[/u\]`is',
         '`\[s\](.+?)\[/s\]`is',
-        '`\[img\](.+?)\[/img\]`is'
+        '`\[img\](.+?)\[/img\]`is',
+        '`\[url\](.+?)\[/url\]`is'
         );
     $replaces =  array(
         '<b>\\1</b>',
         '<i>\\1</i>',
         '<span style="border-bottom: 1px solid">\\1</span>',
         '<strike>\\1</strike>',
-        '<img src="\\1" alt="image" class="user-image"  />'
+        '<img src="\\1" alt="image" class="user-image"  />',
+        '<a class="link w3-text-theme" href="\\1">\\1</a>'
     );
 
     $string = preg_replace($patterns, $replaces , htmlspecialchars($string));

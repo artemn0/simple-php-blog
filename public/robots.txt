@@ -1,3 +1,2 @@
 Allow: /index.html
-Allow: /contacts.html
 Disallow: /*

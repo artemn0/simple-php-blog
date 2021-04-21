@@ -138,6 +138,7 @@ Vue.component('write', {
                         <button class="w3-margin-top w3-button w3-theme-action w3-hover-theme markbuttons" onclick="mixedmark(\'u\')">U</button>\
                         <button class="w3-margin-top w3-button w3-theme-action w3-hover-theme markbuttons" onclick="mixedmark(\'s\')">S</button>\
                         <button class="w3-margin-top w3-button w3-theme-action w3-hover-theme markbuttons" onclick="mixedmark(\'img\')">IMG</button>\
+                        <button class="w3-margin-top w3-button w3-theme-action w3-hover-theme markbuttons" onclick="mixedmark(\'url\')">URL</button>\
                     </div>\
                     <div class="w3-panel w3-center">\
                         <input type="submit" class="w3-button w3-theme-action w3-hover-theme" data-type="write" value="Отправить" />\
